@@ -26,8 +26,14 @@ for (let i = 0; i < 4; i++) {
   scene.add(img);
 }
 
-// Lights
+let objs = [];
+scene.traverse((object) => {
+  if (object.isMesh) {
+    objs.push(object);
+  }
+});
 
+// Lights
 const pointLight = new THREE.PointLight(0xffffff, 0.1);
 pointLight.position.x = 2;
 pointLight.position.y = 3;
@@ -94,9 +100,17 @@ function onmousewheel(e) {
   y = e.deltaY * 0.0007;
 }
 
+const mouse = new THREE.Vector2();
+window.addEventListener("mousemove", (event) => {
+  mouse.x = (event.clientX / sizes.width) * 2 - 1;
+  mouse.y = -(event.clientY / sizes.height) * 2 + 1;
+});
+
 /**
  * Animate
  */
+
+const raycaster = new THREE.Raycaster();
 
 const clock = new THREE.Clock();
 
@@ -108,6 +122,18 @@ const tick = () => {
   position += y;
   y *= 0.9;
   camera.position.y = position;
+
+  // Raycaster
+  raycaster.setFromCamera(mouse, camera);
+  const intersects = raycaster.intersectObjects(objs);
+  for (const intersect of intersects) {
+  }
+
+  for (const object of objs) {
+    if (!intersects.find((intersect) => intersect.object === object)) {
+      object.scale.set(1, 1);
+    }
+  }
 
   // Render
   renderer.render(scene, camera);
