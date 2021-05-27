@@ -10,26 +10,27 @@ const canvas = document.querySelector("canvas.webgl");
 
 // Scene
 const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xf0f0f0);
 
 // Objects
-const geometry = new THREE.SphereGeometry(200, 60, 60);
+const geometry = new THREE.SphereGeometry(20, 100, 100);
 const textureLoader = new THREE.TextureLoader();
+const texture = textureLoader.load("/world.jpg");
 
-const texture = textureLoader.load("/night.png");
 // Materials
-
-const material = new THREE.MeshLambertMaterial({ map: texture });
+const material = new THREE.MeshLambertMaterial({
+  map: texture,
+});
 
 // Mesh
 const sphere = new THREE.Mesh(geometry, material);
 scene.add(sphere);
 
 // Lights
-
-const pointLight = new THREE.PointLight(0xffffff, 0.1);
-pointLight.position.x = 2;
-pointLight.position.y = 3;
-pointLight.position.z = 4;
+const pointLight = new THREE.PointLight(0xffffff, 1);
+pointLight.position.x = 20;
+pointLight.position.y = 20;
+pointLight.position.z = 60;
 scene.add(pointLight);
 
 /**
@@ -62,11 +63,11 @@ const camera = new THREE.PerspectiveCamera(
   75,
   sizes.width / sizes.height,
   0.1,
-  100
+  1000
 );
-camera.position.x = 0;
-camera.position.y = 0;
-camera.position.z = 2;
+camera.position.x = 10;
+camera.position.y = 10;
+camera.position.z = 60;
 scene.add(camera);
 
 // Controls
