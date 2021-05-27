@@ -1,4 +1,5 @@
 import * as dat from "dat.gui";
+import gsap from "gsap";
 import * as THREE from "three";
 import "./style.css";
 
@@ -127,11 +128,16 @@ const tick = () => {
   raycaster.setFromCamera(mouse, camera);
   const intersects = raycaster.intersectObjects(objs);
   for (const intersect of intersects) {
+    gsap.to(intersect.object.scale, { x: 1.7, y: 1.7 });
+    gsap.to(intersect.object.rotation, { y: -0.5 });
+    gsap.to(intersect.object.position, { z: -0.9 });
   }
 
   for (const object of objs) {
     if (!intersects.find((intersect) => intersect.object === object)) {
-      object.scale.set(1, 1);
+      gsap.to(object.scale, { x: 1, y: 1 });
+      gsap.to(object.rotation, { y: 0 });
+      gsap.to(object.position, { z: 0 });
     }
   }
 
